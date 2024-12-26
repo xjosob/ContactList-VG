@@ -19,12 +19,10 @@ namespace MauiApp1.ViewModels
     public partial class MainViewModel : ObservableObject
     {
         private readonly IContactService _contactService;
-        private readonly Page _mainPage;
 
-        public MainViewModel(IContactService contactService, Page mainPage)
+        public MainViewModel(IContactService contactService)
         {
             _contactService = contactService;
-            _mainPage = mainPage;
             UpdateContacts();
         }
 
@@ -40,6 +38,12 @@ namespace MauiApp1.ViewModels
         [RelayCommand]
         public async Task AddContact()
         {
+            var currentPage = Application.Current?.Windows[0]?.Page;
+
+            if (currentPage == null)
+            {
+                return;
+            }
             if (
                 string.IsNullOrEmpty(_contact.FirstName)
                 || string.IsNullOrEmpty(_contact.LastName)
@@ -47,39 +51,29 @@ namespace MauiApp1.ViewModels
                 || string.IsNullOrEmpty(_contact.PhoneNumber)
             )
             {
-                if (_mainPage != null)
-                {
-                    await _mainPage.DisplayAlert(
-                        "Missing information",
-                        "Please fill in all fields",
-                        "OK"
-                    );
-                }
+                await currentPage.DisplayAlert(
+                    "Missing information",
+                    "Please fill in all fields",
+                    "OK"
+                );
                 return;
             }
             if (!ValidationHelper.IsValidEmail(_contact.Email))
             {
-                if (_mainPage != null)
-                {
-                    await _mainPage.DisplayAlert(
-                        "Invalid email",
-                        "Please enter a valid email address",
-                        "OK"
-                    );
-                }
+                await currentPage.DisplayAlert(
+                    "Invalid email",
+                    "Please enter a valid email address",
+                    "OK"
+                );
                 return;
             }
             if (!ValidationHelper.IsValidPhoneNumber(_contact.PhoneNumber))
             {
-                var _mainPage = Application.Current?.Windows[0]?.Page;
-                if (_mainPage != null)
-                {
-                    await _mainPage.DisplayAlert(
-                        "Invalid phone number",
-                        "Please enter a valid phone number",
-                        "OK"
-                    );
-                }
+                await currentPage.DisplayAlert(
+                    "Invalid phone number",
+                    "Please enter a valid phone number",
+                    "OK"
+                );
                 return;
             }
 

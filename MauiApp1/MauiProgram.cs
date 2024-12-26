@@ -19,12 +19,8 @@ namespace MauiApp1
                 });
 
             builder.Services.AddSingleton<MainViewModel>();
-            builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<IContactService, ContactService>();
-            builder.Services.AddSingleton<IFileService, FileService>(sp => new FileService(
-                "Data",
-                "contacts.json"
-            ));
+            builder.Services.AddSingleton<IFileService>(sp => new FileService());
 
             builder.Logging.AddDebug();
 
