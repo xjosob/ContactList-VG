@@ -26,7 +26,7 @@ namespace MauiApp1.ViewModels
             UpdateContacts();
         }
 
-        private readonly ContactModel _contact = new();
+        public ContactModel Contact { get; private set; } = new();
 
         private ObservableCollection<ContactModel> _contacts = new();
         public ObservableCollection<ContactModel> Contacts
@@ -45,10 +45,10 @@ namespace MauiApp1.ViewModels
                 return;
             }
             if (
-                string.IsNullOrEmpty(_contact.FirstName)
-                || string.IsNullOrEmpty(_contact.LastName)
-                || string.IsNullOrEmpty(_contact.Email)
-                || string.IsNullOrEmpty(_contact.PhoneNumber)
+                string.IsNullOrEmpty(Contact.FirstName)
+                || string.IsNullOrEmpty(Contact.LastName)
+                || string.IsNullOrEmpty(Contact.Email)
+                || string.IsNullOrEmpty(Contact.PhoneNumber)
             )
             {
                 await currentPage.DisplayAlert(
@@ -58,7 +58,7 @@ namespace MauiApp1.ViewModels
                 );
                 return;
             }
-            if (!ValidationHelper.IsValidEmail(_contact.Email))
+            if (!ValidationHelper.IsValidEmail(Contact.Email))
             {
                 await currentPage.DisplayAlert(
                     "Invalid email",
@@ -67,7 +67,7 @@ namespace MauiApp1.ViewModels
                 );
                 return;
             }
-            if (!ValidationHelper.IsValidPhoneNumber(_contact.PhoneNumber))
+            if (!ValidationHelper.IsValidPhoneNumber(Contact.PhoneNumber))
             {
                 await currentPage.DisplayAlert(
                     "Invalid phone number",
@@ -78,19 +78,16 @@ namespace MauiApp1.ViewModels
             }
 
             var newContact = ContactFactory.CreateContact(
-                _contact.FirstName,
-                _contact.LastName,
-                _contact.Email,
-                _contact.PhoneNumber
+                Contact.FirstName,
+                Contact.LastName,
+                Contact.Email,
+                Contact.PhoneNumber
             );
 
             _contactService.Add(newContact);
             UpdateContacts();
 
-            _contact.FirstName = string.Empty;
-            _contact.LastName = string.Empty;
-            _contact.Email = string.Empty;
-            _contact.PhoneNumber = string.Empty;
+            Contact = new ContactModel();
         }
 
         public void UpdateContacts()

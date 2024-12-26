@@ -1,10 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiApp1.MainPage">
+             xmlns:models="clr-namespace:Business.Models;assembly=Business"
+             xmlns:viewmodels="clr-namespace:MauiApp1.ViewModels"
+             x:DataType="{x:Type viewmodels:MainViewModel}"
+             x:Class="MauiApp1.MainPage"
+             Title="Contacts">
+ 
 
     <ScrollView>
+        <Grid RowDefinitions="auto, *" Margin="20">
+            <CollectionView Grid.Row="0" ItemsSource="{Binding Contacts}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type models:ContactModel}">
+                        <StackLayout Padding="10">
+                            <Label Text="{Binding FirstName}" FontSize="18" />
+                            <Label Text="{Binding LastName}" FontSize="18" />
+                            <Label Text="{Binding Email}" FontSize="18" />
+                            <Label Text="{Binding PhoneNumber}" FontSize="18" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
+            <Button Command="{Binding AddContactCommand}" Text="Add Contact" Margin="20"/>
+        </Grid>
     </ScrollView>
 
 </ContentPage>
