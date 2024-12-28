@@ -26,6 +26,23 @@ namespace Business.Services
             }
         }
 
+        public void Delete(ContactModel contact)
+        {
+            try
+            {
+                if (!_contacts.Contains(contact))
+                {
+                    throw new InvalidOperationException("Contact not found");
+                }
+                _contacts.Remove(contact);
+                _fileService.SaveListToFile(_contacts);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
         public IEnumerable<ContactModel> GetAll()
         {
             try
@@ -37,6 +54,26 @@ namespace Business.Services
             {
                 Console.WriteLine(ex.Message);
                 return [];
+            }
+        }
+
+        public void Edit(ContactModel updatedContact)
+        {
+            try
+            {
+                var contact =
+                    _contacts.FirstOrDefault(c => c.Id == updatedContact.Id)
+                    ?? throw new InvalidOperationException("Contact not found");
+                contact.FirstName = updatedContact.FirstName;
+                contact.LastName = updatedContact.LastName;
+                contact.Email = updatedContact.Email;
+                contact.PhoneNumber = updatedContact.PhoneNumber;
+
+                _fileService.SaveListToFile(_contacts);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
     }

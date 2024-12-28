@@ -90,6 +90,13 @@ namespace MauiApp1.ViewModels
             Contact = new ContactModel();
         }
 
+        [RelayCommand]
+        public void DeleteContact(ContactModel contact)
+        {
+            _contactService.Delete(contact);
+            UpdateContacts();
+        }
+
         public void UpdateContacts()
         {
             Contacts = new ObservableCollection<ContactModel>(_contactService.GetAll());
