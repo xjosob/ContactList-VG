@@ -34,9 +34,22 @@ namespace MauiApp1.ViewModels
         }
 
         [RelayCommand]
-        public void DeleteContact(ContactModel contact)
+        public static async Task NavigateToAddContact()
         {
-            var currentPage = Application.Current?.Windows[0]?.Page;
+            await Shell.Current.GoToAsync("AddContactView");
+        }
+
+        [RelayCommand]
+        private static async Task NavigatetoEditContact(ContactModel contact)
+        {
+            var navigationParameter = new ShellNavigationQueryParameters { { "Contact", contact } };
+            await Shell.Current.GoToAsync("EditContactView", navigationParameter);
+        }
+
+        [RelayCommand]
+        public async Task DeleteContact(ContactModel contact)
+        {
+            var currentPage = Shell.Current?.CurrentPage;
 
             if (currentPage == null)
             {
@@ -50,7 +63,7 @@ namespace MauiApp1.ViewModels
             }
             catch (Exception ex)
             {
-                currentPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+                await currentPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
             }
         }
 

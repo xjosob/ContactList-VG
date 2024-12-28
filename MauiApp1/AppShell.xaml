@@ -4,12 +4,21 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MauiApp1"
+    xmlns:views="clr-namespace:MauiApp1.Views"
     Shell.FlyoutBehavior="Flyout"
-    Title="MauiApp1">
+    Title="Contacts">
 
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
+        ContentTemplate="{DataTemplate views:MainPage}"
         Route="MainPage" />
+    <ShellContent
+        Title="Add Contact"
+        ContentTemplate="{DataTemplate views:AddContactView}"
+        Route="AddContactView" />
+    <ShellContent
+        Title="Edit Contact"
+        ContentTemplate="{DataTemplate views:EditContactView}"
+        Route="EditContactView" />
 
 </Shell>

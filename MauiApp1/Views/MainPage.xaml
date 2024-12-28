@@ -4,7 +4,7 @@
              xmlns:models="clr-namespace:Business.Models;assembly=Business"
              xmlns:viewmodels="clr-namespace:MauiApp1.ViewModels"
              x:DataType="{x:Type viewmodels:MainViewModel}"
-             x:Class="MauiApp1.MainPage"
+             x:Class="MauiApp1.Views.MainPage"
              Title="Contacts">
  
 
@@ -18,12 +18,13 @@
                             <Label Text="{Binding LastName}" FontSize="18" />
                             <Label Text="{Binding Email}" FontSize="18" />
                             <Label Text="{Binding PhoneNumber}" FontSize="18" />
+                            <Button Text="Edit" CommandParameter="{Binding .}" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=NavigateToEditContactCommand}" Margin="20"/>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <Button Command="{Binding AddContactCommand}" Text="Add Contact" Margin="20"/>
+            <Button Text="+" CommandParameter="{Binding .}" Command="{Binding NavigateToAddContactCommand}" Margin="20"/>
         </Grid>
     </ScrollView>
 

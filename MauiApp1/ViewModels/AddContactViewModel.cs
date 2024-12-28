@@ -21,7 +21,7 @@ namespace MauiApp1.ViewModels
         [RelayCommand]
         public async Task AddContact()
         {
-            var currentPage = Application.Current?.Windows[0]?.Page;
+            var currentPage = Shell.Current?.CurrentPage;
 
             if (currentPage == null)
             {
@@ -70,6 +70,11 @@ namespace MauiApp1.ViewModels
             _contactService.Add(newContact);
 
             Contact = new ContactModel();
+
+            if (Shell.Current != null)
+            {
+                await Shell.Current.GoToAsync("//MainPage");
+            }
         }
     }
 }
