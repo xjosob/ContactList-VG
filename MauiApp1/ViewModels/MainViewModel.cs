@@ -26,9 +26,7 @@ namespace MauiApp1.ViewModels
             UpdateContacts();
         }
 
-        public ContactModel Contact { get; private set; } = new();
-
-        private ObservableCollection<ContactModel> _contacts = new();
+        private ObservableCollection<ContactModel> _contacts = [];
         public ObservableCollection<ContactModel> Contacts
         {
             get => _contacts;
@@ -36,7 +34,7 @@ namespace MauiApp1.ViewModels
         }
 
         [RelayCommand]
-        public async Task AddContact()
+        public void DeleteContact(ContactModel contact)
         {
             var currentPage = Application.Current?.Windows[0]?.Page;
 
@@ -44,57 +42,16 @@ namespace MauiApp1.ViewModels
             {
                 return;
             }
-            if (
-                string.IsNullOrEmpty(Contact.FirstName)
-                || string.IsNullOrEmpty(Contact.LastName)
-                || string.IsNullOrEmpty(Contact.Email)
-                || string.IsNullOrEmpty(Contact.PhoneNumber)
-            )
+
+            try
             {
-                await currentPage.DisplayAlert(
-                    "Missing information",
-                    "Please fill in all fields",
-                    "OK"
-                );
-                return;
+                _contactService.Delete(contact);
+                UpdateContacts();
             }
-            if (!ValidationHelper.IsValidEmail(Contact.Email))
+            catch (Exception ex)
             {
-                await currentPage.DisplayAlert(
-                    "Invalid email",
-                    "Please enter a valid email address",
-                    "OK"
-                );
-                return;
+                currentPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
             }
-            if (!ValidationHelper.IsValidPhoneNumber(Contact.PhoneNumber))
-            {
-                await currentPage.DisplayAlert(
-                    "Invalid phone number",
-                    "Please enter a valid phone number",
-                    "OK"
-                );
-                return;
-            }
-
-            var newContact = ContactFactory.CreateContact(
-                Contact.FirstName,
-                Contact.LastName,
-                Contact.Email,
-                Contact.PhoneNumber
-            );
-
-            _contactService.Add(newContact);
-            UpdateContacts();
-
-            Contact = new ContactModel();
-        }
-
-        [RelayCommand]
-        public void DeleteContact(ContactModel contact)
-        {
-            _contactService.Delete(contact);
-            UpdateContacts();
         }
 
         public void UpdateContacts()
