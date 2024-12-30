@@ -22,30 +22,36 @@ namespace MauiApp1.ViewModels
         }
 
         [RelayCommand]
-        public async Task EditContact(ContactModel contact)
+        public async Task EditContact()
         {
-            if (contact == null)
+            if (Contact == null)
             {
                 return;
             }
 
             try
             {
-                _contactService.Edit(contact);
+                _contactService.Edit(Contact);
+                if (Shell.Current != null)
+                {
+                    await Shell.Current.GoToAsync("//MainPage");
+                }
+                if (Shell.Current?.CurrentPage?.BindingContext is MainViewModel mainViewModel)
+                {
+                    mainViewModel.UpdateContacts();
+                }
             }
             catch (Exception ex)
             {
                 var currentPage = Shell.Current?.CurrentPage;
-                if (currentPage == null)
+                if (currentPage != null)
                 {
-                    return;
+                    await currentPage.DisplayAlert(
+                        "Error",
+                        $"An error occurred: {ex.Message}",
+                        "OK"
+                    );
                 }
-                await currentPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
-            }
-
-            if (Shell.Current != null)
-            {
-                await Shell.Current.GoToAsync("//MainPage");
             }
         }
 
@@ -56,7 +62,16 @@ namespace MauiApp1.ViewModels
                 && contact is ContactModel contactModel
             )
             {
-                Contact = contactModel;
+                Contact = new ContactModel
+                {
+                    Id = contactModel.Id,
+                    FirstName = contactModel.FirstName,
+                    LastName = contactModel.LastName,
+                    Email = contactModel.Email,
+                    PhoneNumber = contactModel.PhoneNumber,
+                };
+
+                OnPropertyChanged(nameof(Contact));
             }
         }
     }

@@ -10,7 +10,7 @@
 
     <ScrollView>
         <Grid RowDefinitions="auto, *" Margin="20">
-            <CollectionView Grid.Row="0" ItemsSource="{Binding Contacts}">
+            <CollectionView Grid.Row="0" ItemsSource="{Binding Contacts}" SelectionMode="None">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="{x:Type models:ContactModel}">
                         <StackLayout Padding="10">
@@ -19,12 +19,13 @@
                             <Label Text="{Binding Email}" FontSize="18" />
                             <Label Text="{Binding PhoneNumber}" FontSize="18" />
                             <Button Text="Edit" CommandParameter="{Binding .}" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=NavigateToEditContactCommand}" Margin="20"/>
+                            <Button Text="Delete" CommandParameter="{Binding .}" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=DeleteContactCommand}" Margin="20"/>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <Button Text="+" CommandParameter="{Binding .}" Command="{Binding NavigateToAddContactCommand}" Margin="20"/>
+            <Button Grid.Row="1"  Text="+" CommandParameter="{Binding .}" Command="{Binding NavigateToAddContactCommand}" Margin="20"/>
         </Grid>
     </ScrollView>
 
