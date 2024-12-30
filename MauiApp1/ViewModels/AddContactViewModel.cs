@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,11 +13,22 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace MauiApp1.ViewModels
 {
-    public partial class AddContactViewModel(IContactService contactService) : ObservableObject
+    public partial class AddContactViewModel : ObservableObject
     {
-        private readonly IContactService _contactService = contactService;
+        private readonly IContactService _contactService;
 
-        public ContactModel Contact { get; private set; } = new();
+        public AddContactViewModel(IContactService contactService)
+        {
+            _contactService = contactService;
+            Contact = new ContactModel();
+        }
+
+        private ContactModel _contact = new ContactModel();
+        public ContactModel Contact
+        {
+            get => _contact;
+            set => SetProperty(ref _contact, value);
+        }
 
         [RelayCommand]
         public async Task AddContact()
@@ -74,6 +86,11 @@ namespace MauiApp1.ViewModels
             if (Shell.Current != null)
             {
                 await Shell.Current.GoToAsync("//MainPage");
+
+                if (Shell.Current.CurrentPage?.BindingContext is MainViewModel mainView)
+                {
+                    mainView.UpdateContacts();
+                }
             }
         }
     }

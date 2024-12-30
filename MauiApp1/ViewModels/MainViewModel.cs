@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,13 +35,13 @@ namespace MauiApp1.ViewModels
         }
 
         [RelayCommand]
-        public static async Task NavigateToAddContact()
+        public async Task NavigateToAddContact()
         {
             await Shell.Current.GoToAsync("AddContactView");
         }
 
         [RelayCommand]
-        private static async Task NavigatetoEditContact(ContactModel contact)
+        public async Task NavigateToEditContact(ContactModel contact)
         {
             var navigationParameter = new ShellNavigationQueryParameters { { "Contact", contact } };
             await Shell.Current.GoToAsync("EditContactView", navigationParameter);
@@ -69,7 +70,11 @@ namespace MauiApp1.ViewModels
 
         public void UpdateContacts()
         {
-            Contacts = new ObservableCollection<ContactModel>(_contactService.GetAll());
+            Contacts.Clear();
+            foreach (var contact in _contactService.GetAll())
+            {
+                Contacts.Add(contact);
+            }
         }
     }
 #pragma warning restore CA1416

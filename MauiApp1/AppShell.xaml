@@ -9,7 +9,7 @@
     Title="Contacts">
 
     <ShellContent
-        Title="Home"
+        Title="Main Page"
         ContentTemplate="{DataTemplate views:MainPage}"
         Route="MainPage" />
     <ShellContent

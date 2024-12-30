@@ -1,4 +1,5 @@
-﻿using MauiApp1.ViewModels;
+﻿using System.Diagnostics;
+using MauiApp1.ViewModels;
 
 namespace MauiApp1.Views;
 
