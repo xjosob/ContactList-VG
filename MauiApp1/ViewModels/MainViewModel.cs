@@ -50,6 +50,10 @@ namespace MauiApp1.ViewModels
         [RelayCommand]
         public async Task DeleteContact(ContactModel contact)
         {
+            if (contact == null)
+            {
+                return;
+            }
             var currentPage = Shell.Current?.CurrentPage;
 
             if (currentPage == null)

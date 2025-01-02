@@ -5,7 +5,7 @@ using Presentation.ConsoleApp.Interfaces;
 using Presentation.ConsoleApp.MainApp.Services;
 
 var serviceProdiver = new ServiceCollection()
-    .AddSingleton<IFileService>(new FileService("Data", "contacts.json"))
+    .AddSingleton<IFileService>(new FileService("contacts.json"))
     .AddSingleton<IContactService, ContactService>()
     .AddTransient<MenuService>()
     .BuildServiceProvider();
