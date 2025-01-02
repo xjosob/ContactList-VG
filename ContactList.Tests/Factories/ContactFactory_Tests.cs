@@ -7,7 +7,7 @@ using Business.Factories;
 
 namespace ContactList.Tests.Factories
 {
-    public class Contactfactory_Tests
+    public class ContactFactory_Tests
     {
         [Fact]
         public void Create_ShouldReturnContact()

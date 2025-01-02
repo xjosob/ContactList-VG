@@ -16,10 +16,24 @@ namespace Business.Services
         private readonly string _filePath;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
 
-        public FileService(string directoryPath = "Data", string fileName = "list.json")
+        public FileService(string fileName = "list.json")
         {
-            _directoryPath = directoryPath;
-            _filePath = Path.Combine(_directoryPath, fileName);
+            if (OperatingSystem.IsWindows())
+            {
+                _directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "Data");
+            }
+            else
+            {
+                _directoryPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "Data"
+                );
+            }
+
+            _filePath = Path.Combine(
+                _directoryPath ?? throw new InvalidOperationException("Directory path is null"),
+                fileName
+            );
             _jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
         }
 
@@ -59,7 +73,7 @@ namespace Business.Services
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                return [];
+                return new List<ContactModel>();
             }
         }
     }

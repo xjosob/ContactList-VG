@@ -22,7 +22,7 @@ namespace ContactList.Tests.Services
 
             var contacts = new List<ContactModel>
             {
-                new ContactModel
+                new()
                 {
                     Id = GuidHelper.GenerateGuid(),
                     FirstName = "Bert",
@@ -68,7 +68,7 @@ namespace ContactList.Tests.Services
 
             // assert
             Assert.NotNull(result);
-            Assert.Equal(contacts.Count(), result.Count());
+            Assert.Equal(contacts.Count, result.Count());
             Assert.Contains(result, c => c.FirstName == "Bert" && c.LastName == "Johansson");
             mockFileService.Verify(fs => fs.GetListFromFile(), Times.Once);
         }
