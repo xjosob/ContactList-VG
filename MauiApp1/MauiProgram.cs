@@ -1,5 +1,7 @@
 ﻿using Business.Interfaces;
 using Business.Services;
+using MauiApp1.Interfaces;
+using MauiApp1.Services;
 using MauiApp1.ViewModels;
 using MauiApp1.Views;
 using Microsoft.Extensions.Logging;
@@ -30,6 +32,7 @@ namespace MauiApp1
 
             builder.Services.AddSingleton<IContactService, ContactService>();
             builder.Services.AddSingleton<IFileService>(sp => new FileService());
+            builder.Services.AddSingleton<IAlertService, AlertService>();
 
             builder.Logging.AddDebug();
 

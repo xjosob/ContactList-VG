@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Business.Interfaces;
 using Business.Models;
 using Business.Services;
+using MauiApp1.Interfaces;
 using MauiApp1.ViewModels;
 using Moq;
 
@@ -15,11 +16,13 @@ namespace MauiApp1.Tests
     {
         private readonly Mock<IContactService> _contactServiceMock;
         private readonly MainViewModel _viewModel;
+        private readonly Mock<IAlertService> _alertServiceMock;
 
         public MainViewModel_Tests()
         {
             _contactServiceMock = new Mock<IContactService>();
-            _viewModel = new MainViewModel(_contactServiceMock.Object);
+            _alertServiceMock = new Mock<IAlertService>();
+            _viewModel = new MainViewModel(_contactServiceMock.Object, _alertServiceMock.Object);
         }
 
         [Fact]
@@ -68,19 +71,51 @@ namespace MauiApp1.Tests
                 Email = "john@hotmail.com",
             };
             var mockContacts = new List<ContactModel> { mockContact };
-            _contactServiceMock.Setup(service => service.GetAll()).Returns(mockContacts);
-            _contactServiceMock.Setup(service => service.Delete(mockContact));
-            _viewModel.UpdateContacts();
 
-            _contactServiceMock.Invocations.Clear();
+            #region Mock Setup written by ChatGPT
+            // 'GetAll' dynamically fetches the list pf contacts except the one to be deleted.
+            // The "Returns" method uses a lambda expression to filter out "mockContact" from the list.
+            _contactServiceMock
+                .Setup(service => service.GetAll())
+                .Returns(() => mockContacts.Where(c => c != mockContact).ToList());
+
+            // 'Delete' removes the contact from the list by removing it from 'mockContacts'.
+            // The 'Callback' method is triggered when 'Delete' is called, removing the contact from the list.
+            _contactServiceMock
+                .Setup(service => service.Delete(It.IsAny<ContactModel>()))
+                .Callback<ContactModel>(contact => mockContacts.Remove(contact));
+
+            // This mock ensures that 'DisplayAlert' can be verified but doesn't actually display an alert. Otherwise, unexpected errors may pop up during testing.
+            // 'It.IsAny<string>()' matches any string argument passed to 'DisplayAlert'.
+            _alertServiceMock.Setup(service =>
+                service.DisplayAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
+            );
+            #endregion
+
+            _viewModel.UpdateContacts();
 
             // Act
             await _viewModel.DeleteContact(mockContact);
 
             //Assert
-            _contactServiceMock.Verify(service => service.Delete(mockContact), Times.Once);
+            _contactServiceMock.Verify(
+                service =>
+                    service.Delete(
+                        It.Is<ContactModel>(c => c.FirstName == "John" && c.LastName == "Doe")
+                    ),
+                Times.Once
+            );
             Assert.Empty(_viewModel.Contacts);
             Assert.DoesNotContain(mockContact, _viewModel.Contacts);
+            _alertServiceMock.Verify(
+                service =>
+                    service.DisplayAlert(
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()
+                    ),
+                Times.Never
+            );
         }
     }
 }

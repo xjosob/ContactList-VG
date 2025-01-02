@@ -13,6 +13,7 @@ using Business.Models;
 using Business.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MauiApp1.Interfaces;
 
 namespace MauiApp1.ViewModels
 {
@@ -20,10 +21,12 @@ namespace MauiApp1.ViewModels
     public partial class MainViewModel : ObservableObject
     {
         private readonly IContactService _contactService;
+        private readonly IAlertService _alertService;
 
-        public MainViewModel(IContactService contactService)
+        public MainViewModel(IContactService contactService, IAlertService alertService)
         {
             _contactService = contactService;
+            _alertService = alertService;
             UpdateContacts();
         }
 
@@ -54,12 +57,6 @@ namespace MauiApp1.ViewModels
             {
                 return;
             }
-            var currentPage = Shell.Current?.CurrentPage;
-
-            if (currentPage == null)
-            {
-                return;
-            }
 
             try
             {
@@ -68,7 +65,7 @@ namespace MauiApp1.ViewModels
             }
             catch (Exception ex)
             {
-                await currentPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+                await _alertService.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
             }
         }
 
