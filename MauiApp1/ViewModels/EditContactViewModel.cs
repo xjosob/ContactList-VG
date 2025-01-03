@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Business.Helpers;
 using Business.Interfaces;
 using Business.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -29,6 +30,39 @@ namespace MauiApp1.ViewModels
         {
             if (Contact == null)
             {
+                return;
+            }
+
+            if (
+                string.IsNullOrEmpty(Contact.FirstName)
+                || string.IsNullOrEmpty(Contact.LastName)
+                || string.IsNullOrEmpty(Contact.Email)
+                || string.IsNullOrEmpty(Contact.PhoneNumber)
+            )
+            {
+                await _alertService.DisplayAlert(
+                    "Missing information",
+                    "Please fill in all fields",
+                    "OK"
+                );
+                return;
+            }
+            if (!ValidationHelper.IsValidEmail(Contact.Email))
+            {
+                await _alertService.DisplayAlert(
+                    "Invalid email",
+                    "Please enter a valid email address",
+                    "OK"
+                );
+                return;
+            }
+            if (!ValidationHelper.IsValidPhoneNumber(Contact.PhoneNumber))
+            {
+                await _alertService.DisplayAlert(
+                    "Invalid phone number",
+                    "Please enter a valid phone number",
+                    "OK"
+                );
                 return;
             }
 
