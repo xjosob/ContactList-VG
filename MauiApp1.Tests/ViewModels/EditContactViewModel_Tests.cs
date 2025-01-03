@@ -114,6 +114,104 @@ namespace MauiApp1.Tests.ViewModels
         }
 
         [Fact]
+        public async Task EditContact_WithMissingInformation_ShouldDisplayAlert()
+        {
+            // Arrange
+            var mockContact = new ContactModel
+            {
+                FirstName = "",
+                LastName = "Doe",
+                PhoneNumber = "0334933744",
+                Email = "john@hotmail.com",
+            };
+            var mockQuery = new Dictionary<string, object> { { "Contact", mockContact } };
+            _viewModel.ApplyQueryAttributes(mockQuery);
+
+            // Act
+            await _viewModel.EditContact();
+
+            // Assert
+            _contactServiceMock.Verify(
+                service => service.Edit(It.IsAny<ContactModel>()),
+                Times.Never
+            );
+            _alertServiceMock.Verify(
+                service =>
+                    service.DisplayAlert("Missing information", "Please fill in all fields", "OK"),
+                Times.Once
+            );
+        }
+
+        [Fact]
+        public async Task EditContact_WithInvalidEmail_ShouldDisplayAlert()
+        {
+            // Arrange
+            var mockContact = new ContactModel
+            {
+                FirstName = "John",
+                LastName = "Doe",
+                PhoneNumber = "0334933744",
+                Email = "johnhotmail.com",
+            };
+            var mockQuery = new Dictionary<string, object> { { "Contact", mockContact } };
+
+            _viewModel.ApplyQueryAttributes(mockQuery);
+
+            // Act
+            await _viewModel.EditContact();
+
+            // Assert
+            _contactServiceMock.Verify(
+                service => service.Edit(It.IsAny<ContactModel>()),
+                Times.Never
+            );
+            _alertServiceMock.Verify(
+                service =>
+                    service.DisplayAlert(
+                        "Invalid email",
+                        "Please enter a valid email address",
+                        "OK"
+                    ),
+                Times.Once
+            );
+        }
+
+        [Fact]
+        public async Task EditContact_WithInvalidPhoneNumber_ShouldDisplayAlert()
+        {
+            // Arrange
+            var mockContact = new ContactModel
+            {
+                FirstName = "John",
+                LastName = "Doe",
+                PhoneNumber = "dasdasd",
+                Email = "john@hotmail.com",
+            };
+
+            var mockQuery = new Dictionary<string, object> { { "Contact", mockContact } };
+
+            _viewModel.ApplyQueryAttributes(mockQuery);
+
+            // Act
+            await _viewModel.EditContact();
+
+            // Assert
+            _contactServiceMock.Verify(
+                service => service.Edit(It.IsAny<ContactModel>()),
+                Times.Never
+            );
+            _alertServiceMock.Verify(
+                service =>
+                    service.DisplayAlert(
+                        "Invalid phone number",
+                        "Please enter a valid phone number",
+                        "OK"
+                    ),
+                Times.Once
+            );
+        }
+
+        [Fact]
         public void ApplyQueryAttributes_ShouldUpdateContact()
         {
             // Arrange
