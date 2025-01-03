@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Business.Factories;
 using Business.Helpers;
 using Business.Interfaces;
 using Business.Models;
@@ -91,14 +92,12 @@ namespace MauiApp1.ViewModels
                 && contact is ContactModel contactModel
             )
             {
-                Contact = new ContactModel
-                {
-                    Id = contactModel.Id,
-                    FirstName = contactModel.FirstName,
-                    LastName = contactModel.LastName,
-                    Email = contactModel.Email,
-                    PhoneNumber = contactModel.PhoneNumber,
-                };
+                Contact = ContactFactory.CreateContact(
+                    contactModel.FirstName,
+                    contactModel.LastName,
+                    contactModel.Email,
+                    contactModel.PhoneNumber
+                );
 
                 OnPropertyChanged(nameof(Contact));
             }
