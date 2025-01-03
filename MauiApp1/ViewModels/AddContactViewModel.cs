@@ -10,16 +10,19 @@ using Business.Interfaces;
 using Business.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MauiApp1.Interfaces;
 
 namespace MauiApp1.ViewModels
 {
     public partial class AddContactViewModel : ObservableObject
     {
         private readonly IContactService _contactService;
+        private readonly IAlertService _alertService;
 
-        public AddContactViewModel(IContactService contactService)
+        public AddContactViewModel(IContactService contactService, IAlertService alertService)
         {
             _contactService = contactService;
+            _alertService = alertService;
             Contact = new ContactModel();
         }
 
@@ -33,12 +36,6 @@ namespace MauiApp1.ViewModels
         [RelayCommand]
         public async Task AddContact()
         {
-            var currentPage = Shell.Current?.CurrentPage;
-
-            if (currentPage == null)
-            {
-                return;
-            }
             if (
                 string.IsNullOrEmpty(Contact.FirstName)
                 || string.IsNullOrEmpty(Contact.LastName)
@@ -46,7 +43,7 @@ namespace MauiApp1.ViewModels
                 || string.IsNullOrEmpty(Contact.PhoneNumber)
             )
             {
-                await currentPage.DisplayAlert(
+                await _alertService.DisplayAlert(
                     "Missing information",
                     "Please fill in all fields",
                     "OK"
@@ -55,7 +52,7 @@ namespace MauiApp1.ViewModels
             }
             if (!ValidationHelper.IsValidEmail(Contact.Email))
             {
-                await currentPage.DisplayAlert(
+                await _alertService.DisplayAlert(
                     "Invalid email",
                     "Please enter a valid email address",
                     "OK"
@@ -64,7 +61,7 @@ namespace MauiApp1.ViewModels
             }
             if (!ValidationHelper.IsValidPhoneNumber(Contact.PhoneNumber))
             {
-                await currentPage.DisplayAlert(
+                await _alertService.DisplayAlert(
                     "Invalid phone number",
                     "Please enter a valid phone number",
                     "OK"
@@ -80,7 +77,6 @@ namespace MauiApp1.ViewModels
             );
 
             _contactService.Add(newContact);
-
             Contact = new ContactModel();
 
             if (Shell.Current != null)
