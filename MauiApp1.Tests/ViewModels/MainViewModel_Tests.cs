@@ -10,7 +10,7 @@ using MauiApp1.Interfaces;
 using MauiApp1.ViewModels;
 using Moq;
 
-namespace MauiApp1.Tests
+namespace MauiApp1.Tests.ViewModels
 {
     public class MainViewModel_Tests
     {
@@ -85,7 +85,8 @@ namespace MauiApp1.Tests
                 .Setup(service => service.Delete(It.IsAny<ContactModel>()))
                 .Callback<ContactModel>(contact => mockContacts.Remove(contact));
 
-            // This mock ensures that 'DisplayAlert' can be verified but doesn't actually display an alert. Otherwise, unexpected errors may pop up during testing.
+            // Mock for 'DisplayAlert': Ensures no alert is displayed during this test execution.
+            // This also prevents unwanted errors caused by UI interactions in tests.
             // 'It.IsAny<string>()' matches any string argument passed to 'DisplayAlert'.
             _alertServiceMock.Setup(service =>
                 service.DisplayAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())

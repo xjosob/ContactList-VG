@@ -7,18 +7,21 @@ using Business.Interfaces;
 using Business.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MauiApp1.Interfaces;
 
 namespace MauiApp1.ViewModels
 {
     public partial class EditContactViewModel : ObservableObject, IQueryAttributable
     {
         private readonly IContactService _contactService;
+        private readonly IAlertService _alertService;
 
         public ContactModel Contact { get; private set; } = new();
 
-        public EditContactViewModel(IContactService contactService)
+        public EditContactViewModel(IContactService contactService, IAlertService alertService)
         {
             _contactService = contactService;
+            _alertService = alertService;
         }
 
         [RelayCommand]
@@ -43,15 +46,7 @@ namespace MauiApp1.ViewModels
             }
             catch (Exception ex)
             {
-                var currentPage = Shell.Current?.CurrentPage;
-                if (currentPage != null)
-                {
-                    await currentPage.DisplayAlert(
-                        "Error",
-                        $"An error occurred: {ex.Message}",
-                        "OK"
-                    );
-                }
+                await _alertService.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
             }
         }
 
