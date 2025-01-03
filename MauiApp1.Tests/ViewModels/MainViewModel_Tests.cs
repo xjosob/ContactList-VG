@@ -88,9 +88,11 @@ namespace MauiApp1.Tests.ViewModels
             // Mock for 'DisplayAlert': Ensures no alert is displayed during this test execution.
             // This also prevents unwanted errors caused by UI interactions in tests.
             // 'It.IsAny<string>()' matches any string argument passed to 'DisplayAlert'.
-            _alertServiceMock.Setup(service =>
-                service.DisplayAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
-            );
+            _alertServiceMock
+                .Setup(service =>
+                    service.DisplayAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
+                )
+                .Returns(Task.CompletedTask);
             #endregion
 
             _viewModel.UpdateContacts();

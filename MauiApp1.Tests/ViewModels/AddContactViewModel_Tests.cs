@@ -43,9 +43,11 @@ namespace MauiApp1.Tests.ViewModels
 
             _contactServiceMock.Setup(service => service.Add(It.IsAny<ContactModel>()));
 
-            _alertServiceMock.Setup(service =>
-                service.DisplayAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
-            );
+            _alertServiceMock
+                .Setup(service =>
+                    service.DisplayAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
+                )
+                .Returns(Task.CompletedTask);
 
             // Act
             _viewModel.Contact = mockContact;
@@ -73,6 +75,99 @@ namespace MauiApp1.Tests.ViewModels
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>()
+                    ),
+                Times.Never
+            );
+        }
+
+        [Fact]
+        public async Task AddContact_WithInvalidEmail_ShouldDisplayInvalidEmailAlert()
+        {
+            // Arrange
+            var mockContact = new ContactModel
+            {
+                FirstName = "John",
+                LastName = "Doe",
+                PhoneNumber = "0334933744",
+                Email = "johnhotmail.com",
+            };
+            _contactServiceMock.Setup(service => service.Add(It.IsAny<ContactModel>()));
+            _alertServiceMock.Setup(service =>
+                service.DisplayAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
+            );
+
+            // Act
+            _viewModel.Contact = mockContact;
+            await _viewModel.AddContact();
+
+            // Assert
+            _contactServiceMock.Verify(
+                service => service.Add(It.IsAny<ContactModel>()),
+                Times.Never
+            );
+            _alertServiceMock.Verify(
+                service =>
+                    service.DisplayAlert(
+                        "Invalid email",
+                        "Please enter a valid email address",
+                        "OK"
+                    ),
+                Times.Once
+            );
+
+            _alertServiceMock.Verify(
+                service =>
+                    service.DisplayAlert(
+                        "Invalid phone number",
+                        "Please enter a valid phone number",
+                        "OK"
+                    ),
+                Times.Never
+            );
+        }
+
+        [Fact]
+        public async Task AddContact_WithInvalidPhoneNumber_ShouldDisplayInvalidPhoneNumberAlert()
+        {
+            // Arrange
+            var mockContact = new ContactModel
+            {
+                FirstName = "John",
+                LastName = "Doe",
+                PhoneNumber = "fsdfsdf",
+                Email = "john@hotmail.com",
+            };
+            _contactServiceMock.Setup(service => service.Add(It.IsAny<ContactModel>()));
+            _alertServiceMock.Setup(service =>
+                service.DisplayAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
+            );
+
+            // Act
+            _viewModel.Contact = mockContact;
+            await _viewModel.AddContact();
+
+            // Assert
+            _contactServiceMock.Verify(
+                service => service.Add(It.IsAny<ContactModel>()),
+                Times.Never
+            );
+
+            _alertServiceMock.Verify(
+                service =>
+                    service.DisplayAlert(
+                        "Invalid phone number",
+                        "Please enter a valid phone number",
+                        "OK"
+                    ),
+                Times.Once
+            );
+
+            _alertServiceMock.Verify(
+                service =>
+                    service.DisplayAlert(
+                        "Invalid email",
+                        "Please enter a valid email address",
+                        "OK"
                     ),
                 Times.Never
             );

@@ -35,14 +35,14 @@ namespace MauiApp1.Tests.ViewModels
             {
                 FirstName = "John",
                 LastName = "Doe",
-                PhoneNumber = "1234567890",
+                PhoneNumber = "0334933744",
                 Email = "john@hotmail.com",
             };
 
             var mockQuery = new Dictionary<string, object> { { "Contact", mockContact } };
 
             _viewModel.ApplyQueryAttributes(mockQuery);
-            _contactServiceMock.Setup(service => service.Edit(mockContact));
+            _contactServiceMock.Setup(service => service.Edit(It.IsAny<ContactModel>()));
 
             // Act
             await _viewModel.EditContact();
@@ -66,17 +66,27 @@ namespace MauiApp1.Tests.ViewModels
                     ),
                 Times.Once
             );
+
+            _alertServiceMock.Verify(
+                service =>
+                    service.DisplayAlert(
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()
+                    ),
+                Times.Never
+            );
         }
 
         [Fact]
-        public async Task EditContact_ShouldShowErrorOnException()
+        public async Task EditContact_WithError_ShouldDisplayAlert()
         {
             // Arrange
             var mockContact = new ContactModel
             {
                 FirstName = "John",
                 LastName = "Doe",
-                PhoneNumber = "1234567890",
+                PhoneNumber = "0334933744",
                 Email = "john@hotmail.com",
             };
 
@@ -98,12 +108,7 @@ namespace MauiApp1.Tests.ViewModels
 
             // Assert
             _alertServiceMock.Verify(
-                service =>
-                    service.DisplayAlert(
-                        "Error",
-                        It.Is<string>(msg => msg.Contains("An error occurred: Test exception")),
-                        "OK"
-                    ),
+                service => service.DisplayAlert("Error", "An error occurred: Test exception", "OK"),
                 Times.Once
             );
         }

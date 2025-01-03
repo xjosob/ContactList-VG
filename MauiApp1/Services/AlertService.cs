@@ -7,7 +7,7 @@ using MauiApp1.Interfaces;
 
 namespace MauiApp1.Services
 {
-    internal class AlertService : IAlertService
+    public class AlertService : IAlertService
     {
         public async Task DisplayAlert(string title, string message, string cancel)
         {
