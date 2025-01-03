@@ -11,7 +11,7 @@ namespace MauiApp1.Services
     {
         public async Task DisplayAlert(string title, string message, string cancel)
         {
-            if (Shell.Current.CurrentPage != null)
+            if (Shell.Current?.CurrentPage != null)
             {
                 await Shell.Current.CurrentPage.DisplayAlert(title, message, cancel);
             }
