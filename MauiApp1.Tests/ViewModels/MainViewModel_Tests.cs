@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Business.Factories;
 using Business.Interfaces;
 using Business.Models;
 using Business.Services;
@@ -37,9 +38,9 @@ namespace MauiApp1.Tests.ViewModels
                     LastName = "Doe",
                     PhoneNumber = "1234567890",
                     Email = "john@hotmail.com",
-                    Address = "123 Main St",
-                    City = "Toronto",
-                    PostalCode = "M1M1M1",
+                    Address = "Testgatan",
+                    City = "Teststad",
+                    PostalCode = "83043",
                 },
             };
 
@@ -69,16 +70,15 @@ namespace MauiApp1.Tests.ViewModels
         public async Task DeleteContact_ShouldRemoveContact()
         {
             // Arrange
-            var mockContact = new ContactModel
-            {
-                FirstName = "John",
-                LastName = "Doe",
-                PhoneNumber = "1234567890",
-                Email = "john@hotmail.com",
-                Address = "123 Main St",
-                City = "Toronto",
-                PostalCode = "M1M1M1",
-            };
+            var mockContact = ContactFactory.CreateContact(
+                "John",
+                "Doe",
+                "john@hotmail.com",
+                "1234567890",
+                "Testgatan",
+                "Teststad",
+                "83043"
+            );
             var mockContacts = new List<ContactModel> { mockContact };
 
             #region Mock Setup written by ChatGPT

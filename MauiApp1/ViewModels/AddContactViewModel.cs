@@ -72,6 +72,16 @@ namespace MauiApp1.ViewModels
                 return;
             }
 
+            if (!ValidationHelper.IsValidPostalCode(Contact.PostalCode))
+            {
+                await _alertService.DisplayAlert(
+                    "Invalid postal code",
+                    "Please enter a valid postal code",
+                    "OK"
+                );
+                return;
+            }
+
             var newContact = ContactFactory.CreateContact(
                 Contact.FirstName,
                 Contact.LastName,

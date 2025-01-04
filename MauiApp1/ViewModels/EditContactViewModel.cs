@@ -76,6 +76,16 @@ namespace MauiApp1.ViewModels
                 return;
             }
 
+            if (!ValidationHelper.IsValidPostalCode(Contact.PostalCode))
+            {
+                await _alertService.DisplayAlert(
+                    "Invalid postal code",
+                    "Please enter a valid postal code",
+                    "OK"
+                );
+                return;
+            }
+
             try
             {
                 _contactService.Edit(Contact);

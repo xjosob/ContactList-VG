@@ -33,13 +33,14 @@ namespace MauiApp1.Tests.ViewModels
             // Arrange
             var mockContact = new ContactModel
             {
+                Id = Guid.NewGuid().ToString(),
                 FirstName = "John",
                 LastName = "Doe",
                 PhoneNumber = "0334933744",
                 Email = "john@hotmail.com",
-                Address = "123 Main St",
-                City = "Toronto",
-                PostalCode = "M1M1M1",
+                Address = "Testgatan",
+                City = "Teststad",
+                PostalCode = "83043",
             };
 
             var mockQuery = new Dictionary<string, object> { { "Contact", mockContact } };
@@ -52,6 +53,7 @@ namespace MauiApp1.Tests.ViewModels
 
             // Assert
             Assert.NotNull(_viewModel.Contact);
+            Assert.Equal(mockContact.Id, _viewModel.Contact.Id);
             Assert.Equal(mockContact.FirstName, _viewModel.Contact.FirstName);
             Assert.Equal(mockContact.LastName, _viewModel.Contact.LastName);
             Assert.Equal(mockContact.PhoneNumber, _viewModel.Contact.PhoneNumber);
@@ -64,7 +66,8 @@ namespace MauiApp1.Tests.ViewModels
                 service =>
                     service.Edit(
                         It.Is<ContactModel>(c =>
-                            c.FirstName == mockContact.FirstName
+                            c.Id == mockContact.Id
+                            && c.FirstName == mockContact.FirstName
                             && c.LastName == mockContact.LastName
                             && c.PhoneNumber == mockContact.PhoneNumber
                             && c.Email == mockContact.Email
@@ -93,13 +96,14 @@ namespace MauiApp1.Tests.ViewModels
             // Arrange
             var mockContact = new ContactModel
             {
+                Id = Guid.NewGuid().ToString(),
                 FirstName = "John",
                 LastName = "Doe",
                 PhoneNumber = "0334933744",
                 Email = "john@hotmail.com",
-                Address = "123 Main St",
-                City = "Toronto",
-                PostalCode = "M1M1M1",
+                Address = "Testgatan",
+                City = "Teststad",
+                PostalCode = "83043",
             };
 
             var mockQuery = new Dictionary<string, object> { { "Contact", mockContact } };
@@ -131,13 +135,14 @@ namespace MauiApp1.Tests.ViewModels
             // Arrange
             var mockContact = new ContactModel
             {
+                Id = Guid.NewGuid().ToString(),
                 FirstName = "",
                 LastName = "Doe",
                 PhoneNumber = "0334933744",
                 Email = "john@hotmail.com",
-                Address = "123 Main St",
-                City = "Toronto",
-                PostalCode = "M1M1M1",
+                Address = "Testgatan",
+                City = "Teststad",
+                PostalCode = "83043",
             };
             var mockQuery = new Dictionary<string, object> { { "Contact", mockContact } };
             _viewModel.ApplyQueryAttributes(mockQuery);
@@ -163,13 +168,14 @@ namespace MauiApp1.Tests.ViewModels
             // Arrange
             var mockContact = new ContactModel
             {
+                Id = Guid.NewGuid().ToString(),
                 FirstName = "John",
                 LastName = "Doe",
                 PhoneNumber = "0334933744",
                 Email = "johnhotmail.com", // missing @
-                Address = "123 Main St",
-                City = "Toronto",
-                PostalCode = "M1M1M1",
+                Address = "Testgatan",
+                City = "Teststad",
+                PostalCode = "83043",
             };
             var mockQuery = new Dictionary<string, object> { { "Contact", mockContact } };
 
@@ -200,13 +206,14 @@ namespace MauiApp1.Tests.ViewModels
             // Arrange
             var mockContact = new ContactModel
             {
+                Id = Guid.NewGuid().ToString(),
                 FirstName = "John",
                 LastName = "Doe",
                 PhoneNumber = "dasdasd", // invalid phone number
                 Email = "john@hotmail.com",
-                Address = "123 Main St",
-                City = "Toronto",
-                PostalCode = "M1M1M1",
+                Address = "Testgatan",
+                City = "Teststad",
+                PostalCode = "83043",
             };
 
             var mockQuery = new Dictionary<string, object> { { "Contact", mockContact } };
@@ -233,15 +240,58 @@ namespace MauiApp1.Tests.ViewModels
         }
 
         [Fact]
+        public async Task EditContact_WithInvalidPostalCode_ShouldDisplayAlert()
+        {
+            // Arrange
+            var mockContact = new ContactModel
+            {
+                Id = Guid.NewGuid().ToString(),
+                FirstName = "John",
+                LastName = "Doe",
+                PhoneNumber = "0334933744",
+                Email = "john@hotmail.com",
+                Address = "Testgatan",
+                City = "Teststad",
+                PostalCode = "asdassf", // invalid postal code
+            };
+
+            var mockQuery = new Dictionary<string, object> { { "Contact", mockContact } };
+
+            _viewModel.ApplyQueryAttributes(mockQuery);
+
+            // Act
+            await _viewModel.EditContact();
+
+            // Assert
+            _contactServiceMock.Verify(
+                service => service.Edit(It.IsAny<ContactModel>()),
+                Times.Never
+            );
+            _alertServiceMock.Verify(
+                service =>
+                    service.DisplayAlert(
+                        "Invalid postal code",
+                        "Please enter a valid postal code",
+                        "OK"
+                    ),
+                Times.Once
+            );
+        }
+
+        [Fact]
         public void ApplyQueryAttributes_ShouldUpdateContact()
         {
             // Arrange
             var mockContact = new ContactModel
             {
+                Id = Guid.NewGuid().ToString(),
                 FirstName = "John",
                 LastName = "Doe",
                 PhoneNumber = "1234567890",
                 Email = "john@hotmail.com",
+                Address = "Testgatan",
+                City = "Teststad",
+                PostalCode = "8304",
             };
             var mockQuery = new Dictionary<string, object> { { "Contact", mockContact } };
 
@@ -250,6 +300,7 @@ namespace MauiApp1.Tests.ViewModels
 
             // Assert
             Assert.NotNull(_viewModel.Contact);
+            Assert.Equal(mockContact.Id, _viewModel.Contact.Id);
             Assert.Equal(mockContact.FirstName, _viewModel.Contact.FirstName);
             Assert.Equal(mockContact.LastName, _viewModel.Contact.LastName);
             Assert.Equal(mockContact.PhoneNumber, _viewModel.Contact.PhoneNumber);

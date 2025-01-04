@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Business.Factories;
 using Business.Helpers;
 using Business.Interfaces;
 using Business.Models;
@@ -33,16 +34,15 @@ namespace MauiApp1.Tests.ViewModels
         public async Task AddContact_WithValidContact_ShouldAddContact()
         {
             // Arrange
-            var mockContact = new ContactModel
-            {
-                FirstName = "John",
-                LastName = "Doe",
-                PhoneNumber = "0334933744",
-                Email = "john@hotmail.com",
-                Address = "123 Main St",
-                City = "Toronto",
-                PostalCode = "M1M1M1",
-            };
+            var mockContact = ContactFactory.CreateContact(
+                firstName: "John",
+                lastName: "Doe",
+                phoneNumber: "0334933744",
+                email: "john@hotmail.com",
+                address: "Testgatan",
+                city: "TestStad",
+                postalCode: "83043"
+            );
 
             _contactServiceMock.Setup(service => service.Add(It.IsAny<ContactModel>()));
 
@@ -55,7 +55,6 @@ namespace MauiApp1.Tests.ViewModels
             // Act
             _viewModel.Contact = mockContact;
 
-            Debug.WriteLine("Calling AddContact...");
             await _viewModel.AddContact();
 
             // Assert
@@ -90,16 +89,15 @@ namespace MauiApp1.Tests.ViewModels
         public async Task AddContact_WithInvalidEmail_ShouldDisplayInvalidEmailAlert()
         {
             // Arrange
-            var mockContact = new ContactModel
-            {
-                FirstName = "John",
-                LastName = "Doe",
-                PhoneNumber = "0334933744",
-                Email = "johnhotmail.com", // missing @
-                Address = "123 Main St",
-                City = "Toronto",
-                PostalCode = "M1M1M1",
-            };
+            var mockContact = ContactFactory.CreateContact(
+                firstName: "John",
+                lastName: "Doe",
+                phoneNumber: "0334933744",
+                email: "fsadadas", // Invalid email
+                address: "Testgatan",
+                city: "TestStad",
+                postalCode: "83043"
+            );
             _contactServiceMock.Setup(service => service.Add(It.IsAny<ContactModel>()));
             _alertServiceMock.Setup(service =>
                 service.DisplayAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
@@ -139,16 +137,15 @@ namespace MauiApp1.Tests.ViewModels
         public async Task AddContact_WithInvalidPhoneNumber_ShouldDisplayInvalidPhoneNumberAlert()
         {
             // Arrange
-            var mockContact = new ContactModel
-            {
-                FirstName = "John",
-                LastName = "Doe",
-                PhoneNumber = "fsdfsdf", // invalid phone number
-                Email = "john@hotmail.com",
-                Address = "123 Main St",
-                City = "Toronto",
-                PostalCode = "M1M1M1",
-            };
+            var mockContact = ContactFactory.CreateContact(
+                firstName: "John",
+                lastName: "Doe",
+                phoneNumber: "dasdas", // Invalid phone number
+                email: "john@hotmail.com",
+                address: "Testgatan",
+                city: "TestStad",
+                postalCode: "83043"
+            );
             _contactServiceMock.Setup(service => service.Add(It.IsAny<ContactModel>()));
             _alertServiceMock.Setup(service =>
                 service.DisplayAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
@@ -179,6 +176,65 @@ namespace MauiApp1.Tests.ViewModels
                     service.DisplayAlert(
                         "Invalid email",
                         "Please enter a valid email address",
+                        "OK"
+                    ),
+                Times.Never
+            );
+        }
+
+        [Fact]
+        public async Task AddContact_WithInvalidPostalCode_ShouldDisplayInvalidPostalCodeAlert()
+        {
+            // Arrange
+            var mockContact = ContactFactory.CreateContact(
+                firstName: "John",
+                lastName: "Doe",
+                phoneNumber: "0334933744",
+                email: "john@hotmail.com",
+                address: "Testgatan",
+                city: "TestStad",
+                postalCode: "dasdasdas" // Invalid postal code
+            );
+            _contactServiceMock.Setup(service => service.Add(It.IsAny<ContactModel>()));
+            _alertServiceMock.Setup(service =>
+                service.DisplayAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
+            );
+
+            // Act
+            _viewModel.Contact = mockContact;
+            await _viewModel.AddContact();
+
+            // Assert
+            _contactServiceMock.Verify(
+                service => service.Add(It.IsAny<ContactModel>()),
+                Times.Never
+            );
+
+            _alertServiceMock.Verify(
+                service =>
+                    service.DisplayAlert(
+                        "Invalid postal code",
+                        "Please enter a valid postal code",
+                        "OK"
+                    ),
+                Times.Once
+            );
+
+            _alertServiceMock.Verify(
+                service =>
+                    service.DisplayAlert(
+                        "Invalid email",
+                        "Please enter a valid email address",
+                        "OK"
+                    ),
+                Times.Never
+            );
+
+            _alertServiceMock.Verify(
+                service =>
+                    service.DisplayAlert(
+                        "Invalid phone number",
+                        "Please enter a valid phone number",
                         "OK"
                     ),
                 Times.Never
