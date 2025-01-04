@@ -18,6 +18,9 @@
                             <Label Text="{Binding LastName}" FontSize="18" />
                             <Label Text="{Binding Email}" FontSize="18" />
                             <Label Text="{Binding PhoneNumber}" FontSize="18" />
+                            <Label Text="{Binding Address}" FontSize="18" />
+                            <Label Text="{Binding City}" FontSize="18" />
+                            <Label Text="{Binding PostalCode}" FontSize="18" />
                             <Button Text="Edit" CommandParameter="{Binding .}" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=NavigateToEditContactCommand}" Margin="20"/>
                             <Button Text="Delete" CommandParameter="{Binding .}" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=DeleteContactCommand}" Margin="20"/>
                         </StackLayout>

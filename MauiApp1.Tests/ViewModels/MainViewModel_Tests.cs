@@ -37,6 +37,9 @@ namespace MauiApp1.Tests.ViewModels
                     LastName = "Doe",
                     PhoneNumber = "1234567890",
                     Email = "john@hotmail.com",
+                    Address = "123 Main St",
+                    City = "Toronto",
+                    PostalCode = "M1M1M1",
                 },
             };
 
@@ -56,6 +59,9 @@ namespace MauiApp1.Tests.ViewModels
             Assert.Equal(mockContacts[0].LastName, _viewModel.Contacts[0].LastName);
             Assert.Equal(mockContacts[0].PhoneNumber, _viewModel.Contacts[0].PhoneNumber);
             Assert.Equal(mockContacts[0].Email, _viewModel.Contacts[0].Email);
+            Assert.Equal(mockContacts[0].Address, _viewModel.Contacts[0].Address);
+            Assert.Equal(mockContacts[0].City, _viewModel.Contacts[0].City);
+            Assert.Equal(mockContacts[0].PostalCode, _viewModel.Contacts[0].PostalCode);
             _contactServiceMock.Verify(service => service.GetAll(), Times.Once);
         }
 
@@ -69,6 +75,9 @@ namespace MauiApp1.Tests.ViewModels
                 LastName = "Doe",
                 PhoneNumber = "1234567890",
                 Email = "john@hotmail.com",
+                Address = "123 Main St",
+                City = "Toronto",
+                PostalCode = "M1M1M1",
             };
             var mockContacts = new List<ContactModel> { mockContact };
 

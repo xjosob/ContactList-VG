@@ -18,6 +18,15 @@
         <Label Text="Phone Number" />
         <Entry Text="{Binding Contact.PhoneNumber}" Placeholder="Enter phone number" Keyboard="Telephone" />
 
+        <Label Text="Address" />
+        <Entry Text="{Binding Contact.Address}" Placeholder="Enter address" />
+
+        <Label Text="City" />
+        <Entry Text="{Binding Contact.City}" Placeholder="Enter city" />
+
+        <Label Text="Postal Code" />
+        <Entry Text="{Binding Contact.PostalCode}" Placeholder="Enter postal code" />
+
         <Button Text="Save" Command="{Binding AddContactCommand}" Margin="0,10,0,0"/>
     </VerticalStackLayout>
 </ContentPage>

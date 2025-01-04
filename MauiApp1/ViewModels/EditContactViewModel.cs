@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,11 +35,19 @@ namespace MauiApp1.ViewModels
                 return;
             }
 
+            if (string.IsNullOrEmpty(Contact.Id))
+            {
+                await _alertService.DisplayAlert("Error", "Invalid Contact: Missing Id.", "OK");
+                return;
+            }
             if (
                 string.IsNullOrEmpty(Contact.FirstName)
                 || string.IsNullOrEmpty(Contact.LastName)
                 || string.IsNullOrEmpty(Contact.Email)
                 || string.IsNullOrEmpty(Contact.PhoneNumber)
+                || string.IsNullOrEmpty(Contact.Address)
+                || string.IsNullOrEmpty(Contact.City)
+                || string.IsNullOrEmpty(Contact.PostalCode)
             )
             {
                 await _alertService.DisplayAlert(
@@ -92,12 +101,17 @@ namespace MauiApp1.ViewModels
                 && contact is ContactModel contactModel
             )
             {
-                Contact = ContactFactory.CreateContact(
-                    contactModel.FirstName,
-                    contactModel.LastName,
-                    contactModel.Email,
-                    contactModel.PhoneNumber
-                );
+                Contact = new ContactModel
+                {
+                    Id = contactModel.Id,
+                    FirstName = contactModel.FirstName,
+                    LastName = contactModel.LastName,
+                    Email = contactModel.Email,
+                    PhoneNumber = contactModel.PhoneNumber,
+                    Address = contactModel.Address,
+                    City = contactModel.City,
+                    PostalCode = contactModel.PostalCode,
+                };
 
                 OnPropertyChanged(nameof(Contact));
             }

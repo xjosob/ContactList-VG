@@ -41,6 +41,9 @@ namespace MauiApp1.ViewModels
                 || string.IsNullOrEmpty(Contact.LastName)
                 || string.IsNullOrEmpty(Contact.Email)
                 || string.IsNullOrEmpty(Contact.PhoneNumber)
+                || string.IsNullOrEmpty(Contact.Address)
+                || string.IsNullOrEmpty(Contact.City)
+                || string.IsNullOrEmpty(Contact.PostalCode)
             )
             {
                 await _alertService.DisplayAlert(
@@ -73,7 +76,10 @@ namespace MauiApp1.ViewModels
                 Contact.FirstName,
                 Contact.LastName,
                 Contact.Email,
-                Contact.PhoneNumber
+                Contact.PhoneNumber,
+                Contact.Address,
+                Contact.City,
+                Contact.PostalCode
             );
 
             _contactService.Add(newContact);

@@ -14,7 +14,10 @@ namespace Business.Factories
             string firstName,
             string lastName,
             string email,
-            string phoneNumber
+            string phoneNumber,
+            string address,
+            string city,
+            string postalCode
         )
         {
             return new ContactModel
@@ -24,6 +27,9 @@ namespace Business.Factories
                 Email = email,
                 LastName = lastName,
                 PhoneNumber = phoneNumber,
+                Address = address,
+                City = city,
+                PostalCode = postalCode,
             };
         }
     }

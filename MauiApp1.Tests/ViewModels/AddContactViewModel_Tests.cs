@@ -39,6 +39,9 @@ namespace MauiApp1.Tests.ViewModels
                 LastName = "Doe",
                 PhoneNumber = "0334933744",
                 Email = "john@hotmail.com",
+                Address = "123 Main St",
+                City = "Toronto",
+                PostalCode = "M1M1M1",
             };
 
             _contactServiceMock.Setup(service => service.Add(It.IsAny<ContactModel>()));
@@ -64,6 +67,9 @@ namespace MauiApp1.Tests.ViewModels
                             && c.LastName == mockContact.LastName
                             && c.PhoneNumber == mockContact.PhoneNumber
                             && c.Email == mockContact.Email
+                            && c.Address == mockContact.Address
+                            && c.City == mockContact.City
+                            && c.PostalCode == mockContact.PostalCode
                         )
                     ),
                 Times.Once
@@ -89,7 +95,10 @@ namespace MauiApp1.Tests.ViewModels
                 FirstName = "John",
                 LastName = "Doe",
                 PhoneNumber = "0334933744",
-                Email = "johnhotmail.com",
+                Email = "johnhotmail.com", // missing @
+                Address = "123 Main St",
+                City = "Toronto",
+                PostalCode = "M1M1M1",
             };
             _contactServiceMock.Setup(service => service.Add(It.IsAny<ContactModel>()));
             _alertServiceMock.Setup(service =>
@@ -134,8 +143,11 @@ namespace MauiApp1.Tests.ViewModels
             {
                 FirstName = "John",
                 LastName = "Doe",
-                PhoneNumber = "fsdfsdf",
+                PhoneNumber = "fsdfsdf", // invalid phone number
                 Email = "john@hotmail.com",
+                Address = "123 Main St",
+                City = "Toronto",
+                PostalCode = "M1M1M1",
             };
             _contactServiceMock.Setup(service => service.Add(It.IsAny<ContactModel>()));
             _alertServiceMock.Setup(service =>

@@ -116,11 +116,38 @@ namespace Presentation.ConsoleApp.MainApp.Services
                     return;
                 }
 
+                Console.Write("Address: ");
+                string? address = Console.ReadLine();
+                if (string.IsNullOrEmpty(address))
+                {
+                    MessageLog("Address cannot be empty. Please try again.");
+                    return;
+                }
+
+                Console.Write("City: ");
+                string? city = Console.ReadLine();
+                if (string.IsNullOrEmpty(city))
+                {
+                    MessageLog("City cannot be empty. Please try again.");
+                    return;
+                }
+
+                Console.Write("Postal code: ");
+                string? postalCode = Console.ReadLine();
+                if (string.IsNullOrEmpty(postalCode))
+                {
+                    MessageLog("Postal code cannot be empty. Please try again.");
+                    return;
+                }
+
                 ContactModel contact = ContactFactory.CreateContact(
                     firstName,
                     lastName,
                     email,
-                    phoneNumber
+                    phoneNumber,
+                    address,
+                    city,
+                    postalCode
                 );
                 _contactService.Add(contact);
                 MessageLog($"{contact.FirstName} {contact.LastName} added to contact list!");
@@ -141,7 +168,7 @@ namespace Presentation.ConsoleApp.MainApp.Services
                 foreach (var contact in contacts)
                 {
                     Console.WriteLine(
-                        $"{contact.FirstName} {contact.LastName}, email: {contact.Email}, phone number: {contact.PhoneNumber}"
+                        $"{contact.FirstName} {contact.LastName}, email: {contact.Email}, phone number: {contact.PhoneNumber}, Address: {contact.Address}, City: {contact.City}, Postal Code: {contact.PostalCode}"
                     );
                 }
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,6 +69,9 @@ namespace Business.Services
                 contact.LastName = updatedContact.LastName;
                 contact.Email = updatedContact.Email;
                 contact.PhoneNumber = updatedContact.PhoneNumber;
+                contact.Address = updatedContact.Address;
+                contact.City = updatedContact.City;
+                contact.PostalCode = updatedContact.PostalCode;
 
                 _fileService.SaveListToFile(_contacts);
             }
