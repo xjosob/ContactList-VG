@@ -1,4 +1,4 @@
-﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:MauiApp1"
@@ -6,7 +6,46 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <!-- Global Colors -->
+                    <Color x:Key="PrimaryColor">#2196F3</Color>
+                    <Color x:Key="AccentColor">#FFC107</Color>
+                    <Color x:Key="FieldBackgroundColor">#F5F5F5</Color>
+                    <Color x:Key="FieldBorderColor">#E0E0E0</Color>
 
+                    <!-- Label Style -->
+                    <Style TargetType="Label">
+                        <Setter Property="TextColor" Value="{StaticResource PrimaryColor}" />
+                        <Setter Property="FontAttributes" Value="Bold" />
+                        <Setter Property="FontSize" Value="14" />
+                        <Setter Property="Margin" Value="0,0,0,5" />
+                    </Style>
+
+                    <!-- Entry Style -->
+                    <Style TargetType="Entry">
+                        <Setter Property="PlaceholderColor" Value="Gray" />
+                        <Setter Property="TextColor" Value="Black" />
+                        <Setter Property="BackgroundColor" Value="White"/>
+                        <Setter Property="Margin" Value="0" />
+                    </Style>
+
+                    <!-- Border Style -->
+                    <Style TargetType="Border">
+                        <Setter Property="BackgroundColor" Value="White"/>
+                        <Setter Property="Stroke" Value="{StaticResource FieldBorderColor}" />
+                        <Setter Property="StrokeShape" Value="RoundRectangle 5" />
+                        <Setter Property="Padding" Value="5" />
+                    </Style>
+
+                    <!-- Button Style -->
+                    <Style TargetType="Button">
+                        <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}" />
+                        <Setter Property="TextColor" Value="White" />
+                        <Setter Property="CornerRadius" Value="5" />
+                        <Setter Property="HorizontalOptions" Value="Center" />
+                        <Setter Property="VerticalOptions" Value="Center" />
+                    </Style>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

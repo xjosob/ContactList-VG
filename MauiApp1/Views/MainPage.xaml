@@ -5,30 +5,52 @@
              xmlns:viewmodels="clr-namespace:MauiApp1.ViewModels"
              x:DataType="{x:Type viewmodels:MainViewModel}"
              x:Class="MauiApp1.Views.MainPage"
-             Title="Contacts">
- 
+             Title="Contacts"
+             BackgroundColor="White">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="TextColor" Value="Black" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#2196F3" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="Padding" Value="10" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ScrollView>
-        <Grid RowDefinitions="auto, *" Margin="20">
+        <Grid RowDefinitions="Auto, *" Margin="20" HorizontalOptions="Center">
+            <!-- Contact List -->
             <CollectionView Grid.Row="0" ItemsSource="{Binding Contacts}" SelectionMode="None">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="{x:Type models:ContactModel}">
-                        <StackLayout Padding="10">
-                            <Label Text="{Binding FirstName}" FontSize="18" />
-                            <Label Text="{Binding LastName}" FontSize="18" />
-                            <Label Text="{Binding Email}" FontSize="18" />
-                            <Label Text="{Binding PhoneNumber}" FontSize="18" />
-                            <Label Text="{Binding Address}" FontSize="18" />
-                            <Label Text="{Binding City}" FontSize="18" />
-                            <Label Text="{Binding PostalCode}" FontSize="18" />
-                            <Button Text="Edit" CommandParameter="{Binding .}" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=NavigateToEditContactCommand}" Margin="20"/>
-                            <Button Text="Delete" CommandParameter="{Binding .}" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=DeleteContactCommand}" Margin="20"/>
-                        </StackLayout>
+                        <Border Stroke="#CCCCCC" StrokeShape="RoundRectangle 8" Padding="10" Margin="0,5" BackgroundColor="{StaticResource FieldBackgroundColor}">
+                            <VerticalStackLayout Spacing="5" Padding="10">
+                                <Label Text="{Binding FirstName}" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"/>
+                                <Label Text="{Binding LastName}" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"/>
+                                <Label Text="{Binding Email}" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"/>
+                                <Label Text="{Binding PhoneNumber}" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"/>
+                                <Label Text="{Binding Address}" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"/>
+                                <Label Text="{Binding City}" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"/>
+                                <Label Text="{Binding PostalCode}" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+                                <!-- Buttons -->
+                                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                                    <Button Text="Edit" CommandParameter="{Binding .}" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=NavigateToEditContactCommand}" Margin="20"/>
+                                    <Button Text="Delete" BackgroundColor="Red" CommandParameter="{Binding .}" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=DeleteContactCommand}" Margin="20"/>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <Button Grid.Row="1"  Text="+" CommandParameter="{Binding .}" Command="{Binding NavigateToAddContactCommand}" Margin="20"/>
+            <Button Grid.Row="1" Text="Add New Contact" HorizontalOptions="Center" VerticalOptions="Center" CommandParameter="{Binding .}" Command="{Binding NavigateToAddContactCommand}" Margin="0,20"/>
         </Grid>
     </ScrollView>
 

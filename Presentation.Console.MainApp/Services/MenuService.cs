@@ -170,6 +170,7 @@ namespace Presentation.ConsoleApp.MainApp.Services
                     Console.WriteLine(
                         $"{contact.FirstName} {contact.LastName}, email: {contact.Email}, phone number: {contact.PhoneNumber}, Address: {contact.Address}, City: {contact.City}, Postal Code: {contact.PostalCode}"
                     );
+                    Console.ReadKey();
                 }
             }
             else
