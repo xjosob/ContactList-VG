@@ -8,5 +8,6 @@ public partial class AddContactView : ContentPage
     {
         InitializeComponent();
         BindingContext = viewModel;
+        Shell.SetNavBarIsVisible(this, false);
     }
 }
