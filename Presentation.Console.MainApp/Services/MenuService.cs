@@ -1,26 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using Business.Factories;
+﻿using Business.Factories;
 using Business.Helpers;
 using Business.Interfaces;
 using Business.Models;
-using Business.Services;
 using Presentation.ConsoleApp.Interfaces;
 
 namespace Presentation.ConsoleApp.MainApp.Services
 {
-    public class MenuService : IMenuService
+    public class MenuService(IContactService contactService) : IMenuService
     {
-        private readonly IContactService _contactService;
-
-        public MenuService(IContactService contactService)
-        {
-            _contactService = contactService;
-        }
+        private readonly IContactService _contactService = contactService;
 
         public void Show()
         {
@@ -76,85 +64,229 @@ namespace Presentation.ConsoleApp.MainApp.Services
 
         public void CreateOption()
         {
-            try
+            while (true)
             {
-                Console.Clear();
-
-                Console.Write("First Name: ");
-                string? firstName = Console.ReadLine();
-                if (string.IsNullOrEmpty(firstName))
+                try
                 {
-                    MessageLog("First name cannot be empty. Please try again.");
-                    return;
-                }
+                    Console.Clear();
 
-                Console.Write("Last Name: ");
-                string? lastName = Console.ReadLine();
-                if (string.IsNullOrEmpty(lastName))
+                    int currentStep = 1;
+                    string firstName = string.Empty;
+                    string lastName = string.Empty;
+                    string email = string.Empty;
+                    string phoneNumber = string.Empty;
+                    string address = string.Empty;
+                    string city = string.Empty;
+                    string postalCode = string.Empty;
+
+                    while (true)
+                    {
+                        Console.Clear();
+                        switch (currentStep)
+                        {
+                            case 1:
+
+                                Console.WriteLine("Enter first name: ");
+                                firstName = Console.ReadLine() ?? string.Empty;
+                                if (string.IsNullOrEmpty(firstName))
+                                {
+                                    MessageLog(
+                                        "First name is required. Press 'Enter' to retry or 'Backspace' to exit."
+                                    );
+                                    if (!WaitForValidKeyPress())
+                                    {
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    currentStep++;
+                                }
+                                break;
+                            case 2:
+
+                                Console.WriteLine("Enter last name: ");
+                                lastName = Console.ReadLine() ?? string.Empty;
+                                if (string.IsNullOrEmpty(lastName))
+                                {
+                                    MessageLog(
+                                        "Last name is required. Press 'Enter' to retry or 'Backspace' to exit."
+                                    );
+                                    if (!WaitForValidKeyPress())
+                                    {
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    currentStep++;
+                                }
+                                break;
+                            case 3:
+
+                                Console.WriteLine("Enter email: ");
+                                email = Console.ReadLine() ?? string.Empty;
+                                if (string.IsNullOrEmpty(email))
+                                {
+                                    MessageLog(
+                                        "Email is required. Press 'Enter' to retry or 'Backspace' to exit."
+                                    );
+                                    if (!WaitForValidKeyPress())
+                                    {
+                                        return;
+                                    }
+                                }
+                                else if (!ValidationHelper.IsValidEmail(email))
+                                {
+                                    MessageLog(
+                                        "Invalid email input. Press 'Enter' to retry or 'Backspace' to exit."
+                                    );
+                                    if (!WaitForValidKeyPress())
+                                    {
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    currentStep++;
+                                }
+                                break;
+                            case 4:
+
+                                Console.WriteLine("Enter phone number: ");
+                                phoneNumber = Console.ReadLine() ?? string.Empty;
+                                if (string.IsNullOrEmpty(phoneNumber))
+                                {
+                                    MessageLog(
+                                        "Phone number is required. Press 'Enter' to retry or 'Backspace' to exit."
+                                    );
+                                    if (!WaitForValidKeyPress())
+                                    {
+                                        return;
+                                    }
+                                }
+                                else if (!ValidationHelper.IsValidPhoneNumber(phoneNumber))
+                                {
+                                    MessageLog(
+                                        "Invalid phone number input. Press 'Enter' to retry or 'Backspace' to exit."
+                                    );
+                                    if (!WaitForValidKeyPress())
+                                    {
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    currentStep++;
+                                }
+                                break;
+                            case 5:
+
+                                Console.WriteLine("Enter address: ");
+                                address = Console.ReadLine() ?? string.Empty;
+                                if (string.IsNullOrEmpty(address))
+                                {
+                                    MessageLog(
+                                        "Address is required. Press 'Enter' to retry or 'Backspace' to exit."
+                                    );
+                                    if (!WaitForValidKeyPress())
+                                    {
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    currentStep++;
+                                }
+                                break;
+                            case 6:
+
+                                Console.WriteLine("Enter city: ");
+                                city = Console.ReadLine() ?? string.Empty;
+                                if (string.IsNullOrEmpty(city))
+                                {
+                                    MessageLog(
+                                        "City is required. Press 'Enter' to retry or 'Backspace' to exit."
+                                    );
+                                    if (!WaitForValidKeyPress())
+                                    {
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    currentStep++;
+                                }
+                                break;
+                            case 7:
+
+                                Console.WriteLine("Enter postal code: ");
+                                postalCode = Console.ReadLine() ?? string.Empty;
+                                if (string.IsNullOrEmpty(postalCode))
+                                {
+                                    MessageLog(
+                                        "Postal code is required. Press 'Enter' to retry or 'Backspace' to exit."
+                                    );
+                                    if (!WaitForValidKeyPress())
+                                    {
+                                        return;
+                                    }
+                                }
+                                else if (!ValidationHelper.IsValidPostalCode(postalCode))
+                                {
+                                    MessageLog(
+                                        "Invalid postal code format. Press 'Enter' to retry or 'Backspace' to exit."
+                                    );
+                                    if (!WaitForValidKeyPress())
+                                    {
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    currentStep++;
+                                }
+                                break;
+                            case 8:
+
+                                ContactModel contact = ContactFactory.CreateContact(
+                                    firstName,
+                                    lastName,
+                                    email,
+                                    phoneNumber,
+                                    address,
+                                    city,
+                                    postalCode
+                                );
+                                _contactService.Add(contact);
+                                MessageLog(
+                                    $"{contact.FirstName} {contact.LastName} added to contact list!"
+                                );
+                                Console.ReadKey();
+                                return;
+                        }
+                    }
+                }
+                catch (Exception ex)
                 {
-                    MessageLog("Last name cannot be empty. Please try again.");
-                    return;
+                    MessageLog(ex.Message);
                 }
-
-                Console.Write("Email: ");
-                string? email = Console.ReadLine();
-                if (string.IsNullOrEmpty(email) || !ValidationHelper.IsValidEmail(email))
-                {
-                    MessageLog("Invalid email format. Please try again.");
-                    return;
-                }
-
-                Console.Write("Phone number: ");
-                string? phoneNumber = Console.ReadLine();
-
-                if (
-                    string.IsNullOrEmpty(phoneNumber)
-                    || !ValidationHelper.IsValidPhoneNumber(phoneNumber)
-                )
-                {
-                    MessageLog("Invalid phone number format. Please try again.");
-                    return;
-                }
-
-                Console.Write("Address: ");
-                string? address = Console.ReadLine();
-                if (string.IsNullOrEmpty(address))
-                {
-                    MessageLog("Address cannot be empty. Please try again.");
-                    return;
-                }
-
-                Console.Write("City: ");
-                string? city = Console.ReadLine();
-                if (string.IsNullOrEmpty(city))
-                {
-                    MessageLog("City cannot be empty. Please try again.");
-                    return;
-                }
-
-                Console.Write("Postal code: ");
-                string? postalCode = Console.ReadLine();
-                if (string.IsNullOrEmpty(postalCode))
-                {
-                    MessageLog("Postal code cannot be empty. Please try again.");
-                    return;
-                }
-
-                ContactModel contact = ContactFactory.CreateContact(
-                    firstName,
-                    lastName,
-                    email,
-                    phoneNumber,
-                    address,
-                    city,
-                    postalCode
-                );
-                _contactService.Add(contact);
-                MessageLog($"{contact.FirstName} {contact.LastName} added to contact list!");
             }
-            catch (Exception ex)
+        }
+
+        private static bool WaitForValidKeyPress()
+        {
+            while (true)
             {
-                MessageLog(ex.Message);
+                ConsoleKeyInfo key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.Backspace)
+                {
+                    return false;
+                }
+                else if (key.Key == ConsoleKey.Enter)
+                {
+                    return true;
+                }
             }
         }
 
@@ -170,12 +302,14 @@ namespace Presentation.ConsoleApp.MainApp.Services
                     Console.WriteLine(
                         $"{contact.FirstName} {contact.LastName}, email: {contact.Email}, phone number: {contact.PhoneNumber}, Address: {contact.Address}, City: {contact.City}, Postal Code: {contact.PostalCode}"
                     );
-                    Console.ReadKey();
                 }
+                Console.ReadKey();
             }
             else
             {
+                Console.Clear();
                 MessageLog("No contacts available.");
+                Console.ReadKey();
             }
         }
 
@@ -183,8 +317,6 @@ namespace Presentation.ConsoleApp.MainApp.Services
         {
             Console.Clear();
             Console.WriteLine(message);
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
         }
     }
 }
