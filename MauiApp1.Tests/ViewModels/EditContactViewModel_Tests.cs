@@ -317,6 +317,11 @@ namespace MauiApp1.Tests.ViewModels
             Assert.NotNull(_viewModel.Contact);
             Assert.Null(_viewModel.Contact.FirstName);
             Assert.Null(_viewModel.Contact.LastName);
+            Assert.Null(_viewModel.Contact.PhoneNumber);
+            Assert.Null(_viewModel.Contact.Email);
+            Assert.Null(_viewModel.Contact.Address);
+            Assert.Null(_viewModel.Contact.City);
+            Assert.Null(_viewModel.Contact.PostalCode);
         }
     }
 }
