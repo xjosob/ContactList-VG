@@ -71,13 +71,13 @@ namespace Presentation.ConsoleApp.MainApp.Services
                     Console.Clear();
 
                     int currentStep = 1;
-                    string firstName = string.Empty;
-                    string lastName = string.Empty;
-                    string email = string.Empty;
-                    string phoneNumber = string.Empty;
-                    string address = string.Empty;
-                    string city = string.Empty;
-                    string postalCode = string.Empty;
+                    string firstName = "";
+                    string lastName = "";
+                    string email = "";
+                    string phoneNumber = "";
+                    string address = "";
+                    string city = "";
+                    string postalCode = "";
 
                     while (true)
                     {
@@ -87,7 +87,7 @@ namespace Presentation.ConsoleApp.MainApp.Services
                             case 1:
 
                                 Console.WriteLine("Enter first name: ");
-                                firstName = Console.ReadLine() ?? string.Empty;
+                                firstName = Console.ReadLine() ?? "";
                                 if (string.IsNullOrEmpty(firstName))
                                 {
                                     MessageLog(
@@ -106,7 +106,7 @@ namespace Presentation.ConsoleApp.MainApp.Services
                             case 2:
 
                                 Console.WriteLine("Enter last name: ");
-                                lastName = Console.ReadLine() ?? string.Empty;
+                                lastName = Console.ReadLine() ?? "";
                                 if (string.IsNullOrEmpty(lastName))
                                 {
                                     MessageLog(
@@ -125,7 +125,7 @@ namespace Presentation.ConsoleApp.MainApp.Services
                             case 3:
 
                                 Console.WriteLine("Enter email: ");
-                                email = Console.ReadLine() ?? string.Empty;
+                                email = Console.ReadLine() ?? "";
                                 if (string.IsNullOrEmpty(email))
                                 {
                                     MessageLog(
@@ -154,7 +154,7 @@ namespace Presentation.ConsoleApp.MainApp.Services
                             case 4:
 
                                 Console.WriteLine("Enter phone number: ");
-                                phoneNumber = Console.ReadLine() ?? string.Empty;
+                                phoneNumber = Console.ReadLine() ?? "";
                                 if (string.IsNullOrEmpty(phoneNumber))
                                 {
                                     MessageLog(
@@ -183,7 +183,7 @@ namespace Presentation.ConsoleApp.MainApp.Services
                             case 5:
 
                                 Console.WriteLine("Enter address: ");
-                                address = Console.ReadLine() ?? string.Empty;
+                                address = Console.ReadLine() ?? "";
                                 if (string.IsNullOrEmpty(address))
                                 {
                                     MessageLog(
@@ -202,7 +202,7 @@ namespace Presentation.ConsoleApp.MainApp.Services
                             case 6:
 
                                 Console.WriteLine("Enter city: ");
-                                city = Console.ReadLine() ?? string.Empty;
+                                city = Console.ReadLine() ?? "";
                                 if (string.IsNullOrEmpty(city))
                                 {
                                     MessageLog(
@@ -221,7 +221,7 @@ namespace Presentation.ConsoleApp.MainApp.Services
                             case 7:
 
                                 Console.WriteLine("Enter postal code: ");
-                                postalCode = Console.ReadLine() ?? string.Empty;
+                                postalCode = Console.ReadLine() ?? "";
                                 if (string.IsNullOrEmpty(postalCode))
                                 {
                                     MessageLog(
