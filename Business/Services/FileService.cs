@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Business.Interfaces;
 using Business.Models;
 
@@ -73,7 +68,7 @@ namespace Business.Services
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                return new List<ContactModel>();
+                return [];
             }
         }
     }

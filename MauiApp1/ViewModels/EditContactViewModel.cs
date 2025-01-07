@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Business.Factories;
-using Business.Helpers;
+﻿using Business.Helpers;
 using Business.Interfaces;
 using Business.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -14,18 +7,15 @@ using MauiApp1.Interfaces;
 
 namespace MauiApp1.ViewModels
 {
-    public partial class EditContactViewModel : ObservableObject, IQueryAttributable
+    public partial class EditContactViewModel(
+        IContactService contactService,
+        IAlertService alertService
+    ) : ObservableObject, IQueryAttributable
     {
-        private readonly IContactService _contactService;
-        private readonly IAlertService _alertService;
+        private readonly IContactService _contactService = contactService;
+        private readonly IAlertService _alertService = alertService;
 
         public ContactModel Contact { get; private set; } = new();
-
-        public EditContactViewModel(IContactService contactService, IAlertService alertService)
-        {
-            _contactService = contactService;
-            _alertService = alertService;
-        }
 
         [RelayCommand]
         public async Task EditContact()

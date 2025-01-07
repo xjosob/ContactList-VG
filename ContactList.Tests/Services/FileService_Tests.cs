@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Business.Helpers;
+﻿using Business.Factories;
 using Business.Interfaces;
 using Business.Models;
 using Business.Services;
@@ -16,28 +11,34 @@ namespace ContactList.Tests.Services
         [Fact]
         public void SaveListToFile_ShouldSaveListToJsonFile()
         {
-            // arrange
+            // Arrange
             var mockFileService = new Mock<IFileService>();
             var contactService = new ContactService(mockFileService.Object);
 
             var contacts = new List<ContactModel>
             {
-                new()
-                {
-                    Id = GuidHelper.GenerateGuid(),
-                    FirstName = "Bert",
-                    LastName = "Johansson",
-                    Email = "bert.johansson@domain.com",
-                    PhoneNumber = "072-462 49 11",
-                },
+                ContactFactory.CreateContact(
+                    "Bert",
+                    "Johansson",
+                    "bert.johansson@domain.com",
+                    "0724624911",
+                    "Testgatan",
+                    "Teststad",
+                    "70349"
+                ),
             };
 
-            // act
+            // Act
             contactService.Add(contacts.First());
 
-            // assert
+            // Assert
             mockFileService.Verify(
-                fs => fs.SaveListToFile(It.IsAny<List<ContactModel>>()),
+                fs =>
+                    fs.SaveListToFile(
+                        It.Is<List<ContactModel>>(List =>
+                            List.Count == contacts.Count && List.First().FirstName == "Bert"
+                        )
+                    ),
                 Times.Once
             );
         }
@@ -45,28 +46,29 @@ namespace ContactList.Tests.Services
         [Fact]
         public void GetListFromFile_ShouldReturnListFromJsonFile()
         {
-            // arrange
+            // Arrange
             var mockFileService = new Mock<IFileService>();
             var contactService = new ContactService(mockFileService.Object);
 
             var contacts = new List<ContactModel>
             {
-                new ContactModel
-                {
-                    Id = GuidHelper.GenerateGuid(),
-                    FirstName = "Bert",
-                    LastName = "Johansson",
-                    Email = "bert.johansson@domain.com",
-                    PhoneNumber = "072-462 49 11",
-                },
+                ContactFactory.CreateContact(
+                    "Bert",
+                    "Johansson",
+                    "bert.johansson@domain.com",
+                    "0724624911",
+                    "Testgatan",
+                    "Teststad",
+                    "70349"
+                ),
             };
 
             mockFileService.Setup(fs => fs.GetListFromFile()).Returns(contacts);
 
-            // act
+            // Act
             var result = contactService.GetAll();
 
-            // assert
+            // Assert
             Assert.NotNull(result);
             Assert.Equal(contacts.Count, result.Count());
             Assert.Contains(result, c => c.FirstName == "Bert" && c.LastName == "Johansson");

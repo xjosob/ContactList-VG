@@ -1,23 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Business;
-using Business.Factories;
-using Business.Helpers;
+﻿using System.Collections.ObjectModel;
 using Business.Interfaces;
 using Business.Models;
-using Business.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiApp1.Interfaces;
 
 namespace MauiApp1.ViewModels
 {
-#pragma warning disable CA1416 // Validate platform compatibility
     public partial class MainViewModel : ObservableObject
     {
         private readonly IContactService _contactService;
@@ -78,5 +67,4 @@ namespace MauiApp1.ViewModels
             }
         }
     }
-#pragma warning restore CA1416
 }

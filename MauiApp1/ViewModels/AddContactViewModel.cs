@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Business.Factories;
+﻿using Business.Factories;
 using Business.Helpers;
 using Business.Interfaces;
 using Business.Models;
@@ -26,7 +20,7 @@ namespace MauiApp1.ViewModels
             Contact = new ContactModel();
         }
 
-        private ContactModel _contact = new ContactModel();
+        private ContactModel _contact = new();
         public ContactModel Contact
         {
             get => _contact;
