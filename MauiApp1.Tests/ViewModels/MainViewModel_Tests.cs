@@ -76,8 +76,8 @@ namespace MauiApp1.Tests.ViewModels
             var mockContacts = new List<ContactModel> { mockContact };
 
             #region Mock Setup written by ChatGPT
-            // 'GetAll' dynamically fetches the list pf contacts except the one to be deleted.
-            // The "Returns" method uses a lambda expression to filter out "mockContact" from the list.
+            // Setup for 'GetAll' returns all contacts except the one to be deleted.
+            // Simulates the removal of the contact from the list when 'Delete' is called.
             _contactServiceMock
                 .Setup(service => service.GetAll())
                 .Returns(() => mockContacts.Where(c => c != mockContact).ToList());
